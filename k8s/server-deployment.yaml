@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: stephengrider/multi-server
+          image: carl1984a0/m-server-0
           ports:
             - containerPort: 5000
           env:
