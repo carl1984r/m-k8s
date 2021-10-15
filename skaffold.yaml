@@ -1,18 +1,28 @@
-apiVersion: skaffold/v1beta2
+apiVersion: skaffold/v2beta24
 kind: Config
+
 build:
+  artifacts:
+  - image: carl1984a0/m-client-0
+    context: client
+    sync:
+      manual:
+      - src: '**/*.css'
+        dest: .
+      - src: '**/*.html'
+        dest: .
+      - src: '**/*.js'
+        dest: .
+    docker:
+      dockerfile: Dockerfile.dev
   local:
     push: false
-  artifacts:
-    - image: carl1984a0/m-client-0
-      context: client
-      docker:
-        dockerfile: Dockerfile.dev
-      sync:
-        '**/*.js': .
-        '**/*.css': .
-        '**/*.html': . 
+    useBuildkit: false
 deploy:
   kubectl:
     manifests:
-      - k8s/client-deployment.yaml
+    - k8s/client-deployment.yaml
+portForward:
+- resourceType: deployment
+  resourceName: client-deployment
+  port: 3000
